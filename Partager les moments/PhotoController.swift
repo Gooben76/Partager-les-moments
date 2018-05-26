@@ -8,13 +8,13 @@
 
 import UIKit
 
-class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate {
 
     @IBOutlet weak var partagerButton: UIBarButtonItem!
     @IBOutlet weak var photoAPartager: UIImageView!
     @IBOutlet weak var textAPartager: UITextView!
     
-    let texteParatger = "Entrez votre texte ..."
+    let texteVide = "Entrez votre texte ..."
     var imagePicker: UIImagePickerController?
     
     
@@ -30,11 +30,19 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         let tap = UITapGestureRecognizer(target: self, action: #selector(cliquerPhoto))
         photoAPartager.addGestureRecognizer(tap)
         
-        textAPartager.text = texteParatger
+        textAPartager.text = texteVide
         
         imagePicker = UIImagePickerController()
         imagePicker?.delegate = self
         imagePicker?.allowsEditing = true
+        
+        textAPartager.delegate = self
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textAPartager.text == texteVide {
+            textAPartager.text = ""
+        }
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -71,7 +79,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         alert.addAction(annuler)
         
         if UIDevice.current.userInterfaceIdiom == .pad {
-            if let pop = popoverPresentationController{
+            if let pop = alert.popoverPresentationController{
                 pop.sourceView = self.view
                 pop.sourceRect = CGRect(x: self.view.frame.midX, y: self.view.frame.midY, width: 0, height: 0)
                 pop.permittedArrowDirections = []
@@ -82,6 +90,25 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
     }
     
     @IBAction func partagerClick(_ sender: Any) {
+        var activites :[Any] = [Any]()
+        if let image = photoAPartager.image, image != #imageLiteral(resourceName: "Superman-facebook.svg") {
+            activites.append(image)
+        }
+        if textAPartager.text != texteVide, textAPartager.text != "" {
+            activites.append(textAPartager.text)
+        }
+        
+        let activite = UIActivityViewController(activityItems: activites, applicationActivities: nil)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            if let pop = activite.popoverPresentationController{
+                pop.sourceView = self.view
+                pop.sourceRect = CGRect(x: self.view.frame.midX, y: self.view.frame.midY, width: 0, height: 0)
+                pop.permittedArrowDirections = []
+            }
+        }
+        self.present(activite, animated: true) {
+            self.miseEnPlace()
+        }
     }
     
 }
