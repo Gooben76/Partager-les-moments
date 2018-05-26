@@ -32,12 +32,11 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>UISupportedInterfaceOrientations~ipad</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Test</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Test2</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Test3</string>
 </dict>
 </plist>
